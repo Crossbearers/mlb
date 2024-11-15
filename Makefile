@@ -8,8 +8,9 @@ OBJS = src/kjv_main.o \
 CFLAGS += -Wall -Isrc/
 LDLIBS += -lreadline
 
-kjv: $(OBJS)
+mlb: $(OBJS)
 	$(CC) -o $@ $(LDFLAGS) $(OBJS) $(LDLIBS)
+	cp ./mlb ~/.local/bin
 
 src/kjv_main.o: src/kjv_main.c src/kjv_config.h src/kjv_data.h src/kjv_match.h src/kjv_ref.h src/kjv_render.h src/strutil.h
 
@@ -25,9 +26,9 @@ src/strutil.o: src/strutil.h src/strutil.c
 
 data/kjv_data.o: src/kjv_data.h data/kjv_data.c
 
-data/kjv_data.c: data/kjv.tsv data/generate.awk src/kjv_data.h
+data/kjv_data.c: data/kjv.csv data/generate.awk src/kjv_data.h
 	awk -f data/generate.awk $< > $@
 
 .PHONY: clean
 clean:
-	rm -rf $(OBJS) kjv
+	rm -rf $(OBJS) kjv mlb
